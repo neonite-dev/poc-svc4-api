@@ -1,0 +1,37 @@
+# pnpm commitlint --edit $1
+
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+message="$(cat $1)"
+requiredPattern="^(feat|fix|doc|css|pkg|refactor|ci|etc|revert|style|test|Merge).*$"
+#requiredPattern2="^(MERGE).*$"
+if ! [[ $message =~ $requiredPattern ]];
+then
+  echo "=========================================================================="
+  echo "======================   🚨 WRONG COMMIT MESSAGE!   ======================"
+  echo "=========================================================================="
+  echo "== Format should be => [header]: [What was done for Why]                =="
+  echo "== Allowed Headers: feat, fix, doc, css, pkg, refactor, ci, etc, test   =="
+  echo "== EXAMPLE => feat: Google login                                        =="
+  echo "=========================================================================="
+  echo "== commit 시 Allowed Headers 아래접두어의 메시지를 꼭 붙여주세요           =="
+  echo "== feat: 새로운 기능 추가                                                =="
+  echo "== fix: 버그수정                                                         =="
+  echo "== doc: 문서의 수정                                                      =="
+  echo "== css/style: 코드 스타일의 변경(코드 포매팅, 세미콜론 누락)                =="
+  echo "== pkg: package 추가 수정                                                =="
+  echo "== refactor: 코드 리펙토링                                                =="
+  echo "== ci: CI 설정 파일 수정                                                  =="
+  echo "== etc: 기타 파일 수정 및 빌드 업데이트                                    =="
+  echo "== test: 설정 및 테스트를 위해 수정                                        =="
+  echo "=========================================================================="
+  echo "== Your commit message was =>" $message 
+  echo "== For more information, check script in .husky/commit-msg or README.md =="
+  echo "=========================================================================="
+  exit 1
+else
+  echo "=========================================================================="
+  echo "=======================      COMMIT CREATED!!      ======================="
+  echo "=========================================================================="
+fi

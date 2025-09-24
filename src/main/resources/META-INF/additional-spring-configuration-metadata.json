@@ -1,0 +1,89 @@
+{
+  "properties": [
+    {
+      "name": "spring.datasource.extranet.driver-class-name",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.extranet.driver-class-name'"
+    },
+    {
+      "name": "spring.datasource.extranet.jdbc-url",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.extranet.jdbc-url'"
+    },
+    {
+      "name": "spring.datasource.extranet.username",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.extranet.username'"
+    },
+    {
+      "name": "spring.datasource.extranet.password",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.extranet.password'"
+    },
+    {
+      "name": "spring.datasource.isherpa.driver-class-name",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.isherpa.driver-class-name'"
+    },
+    {
+      "name": "spring.datasource.isherpa.jdbc-url",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.isherpa.jdbc-url'"
+    },
+    {
+      "name": "spring.datasource.isherpa.username",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.isherpa.username'"
+    },
+    {
+      "name": "spring.datasource.isherpa.password",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.isherpa.password'"
+    },
+    {
+      "name": "spring.datasource.eduapp.driver-class-name",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.eduapp.driver-class-name'"
+    },
+    {
+      "name": "spring.datasource.eduapp.jdbc-url",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.eduapp.jdbc-url'"
+    },
+    {
+      "name": "spring.datasource.eduapp.username",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.eduapp.username'"
+    },
+    {
+      "name": "spring.datasource.eduapp.password",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.datasource.eduapp.password'"
+    },
+    {
+      "name": "spring.jwt.secret",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.jwt.secret'"
+    },
+    {
+      "name": "spring.jwt.header",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.jwt.header'"
+    },
+    {
+      "name": "spring.jwt.refresh",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.jwt.refresh'"
+    },
+    {
+      "name": "spring.jwt.access-expiration",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.jwt.access-expiration'"
+    },
+    {
+      "name": "spring.jwt.refresh-expiration",
+      "type": "java.lang.String",
+      "description": "A description for 'spring.jwt.refresh-expiration'"
+    }
+  ]
+}

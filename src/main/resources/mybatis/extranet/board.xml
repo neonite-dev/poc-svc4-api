@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--변수 대소문자 구별해야함-->
+<mapper namespace="com.cjt.svc4.mapper.extranet.BoardMapper">
+
+ <resultMap id="BoardResult" type="Board">
+    <result column="Class" property="cls" />
+</resultMap>
+
+  <resultMap id="BoardReplyResult" type="BoardReplyList">
+    <result column="Writer_name" property="writerName" />
+ </resultMap>
+
+<!--Select-->
+  <select id="getBoardList" parameterType="BoardParams" resultType="Board">
+
+    EXEC dbo.BoardList @SearchMode     = #{searchMode}
+                     , @MenuId		     = #{menuId}
+                     , @SearchText     = #{searchText}
+                     , @State			     = #{state}
+                     , @Writer		     = #{writer}
+                     , @size			     = #{size}
+                     , @no				     = #{no}
+                     , @Secret		     = #{secret}
+                     , @HeadTitle	     = #{headTitle}
+                     , @BlindYN		     = #{blindYN}
+                     , @Class			     = #{cls}
+                     , @SearchType	   = #{searchType}
+                     , @ReserveDate    = #{reserveDate}
+                     , @ReserveSort    = #{reserveSort}
+
+  </select>
+
+  
+  <select id="getBoardView" parameterType="BoardParams" resultType="Board">
+
+    EXEC dbo.BOARDVIEW @BoardId     = #{boardId}
+                     , @in_UserID		= #{userId}
+
+  </select>
+
+  <select id="getReaderList" parameterType="BoardParams" resultType="ReaderList">
+
+    EXEC dbo.BoardReader @BoardId     = #{boardId}
+                       , @Reader		  = #{reader}
+
+  </select>
+
+
+  <select id="getBoardFileList" parameterType="BoardParams" resultType="BoardFileList">
+
+    EXEC dbo.BoardFileList @BoardId     = #{boardId}
+    
+  </select>
+
+
+  <select id="getBoardFile" parameterType="BoardParams" resultType="BoardFileList"><!--첨부파일 삭제시-->
+
+    EXEC dbo.BoardFile @FileId     = #{boardId}
+
+  </select>
+
+
+  <select id="getBoardReplyList" parameterType="BoardParams" resultMap="BoardReplyResult">
+
+    EXEC dbo.ReplyView @BoardId     = #{boardId}
+                     , @UserId		  = #{userId}
+  </select>
+
+  <select id="getBoardMoveList" parameterType="BoardParams" resultType="Board">
+
+    EXEC dbo.GetDdlMoveMenuList @MenuId     = #{menuId}
+                              , @Class		  = #{cls}
+                              , @UserId		  = #{userId}
+  </select>
+
+  <select id="getBoardIconList" parameterType="String" resultType="Board">
+
+    EXEC dbo.BoardIconList
+
+  </select>
+
+  <select id="boardReadAlready" parameterType="BoardParams" resultType="int">
+
+    EXEC dbo.BOARD_READ @BoardId     = #{boardId}
+                      , @Reader		   = #{reader}
+  </select>
+
+
+  <select id="getHeadTitle" parameterType="BoardParams" resultType="Menu"><!--말머리 선택 셀렉트: 말머리 조회시 A 고정값-->
+
+    EXEC dbo.GetMenuList @strMenuDepth   = 'A' 
+                       , @strMenuId		   = #{menuId}
+  </select>
+
+
+  <select id="getReservePossibleTimeList" parameterType="BoardParams" resultType="Board">
+
+    EXEC dbo.TB_Reserve_Possible_TimeList @ReserveDate     = #{reserveDate}
+
+  </select>
+
+
+  <select id="likeThisAuth" parameterType="BoardParams" statementType="CALLABLE">
+    {CALL dbo.likeThisAuth (
+        @UserId = #{userId, jdbcType=VARCHAR},
+        @Class = #{cls, jdbcType=VARCHAR},
+        @AuthYN = #{authYN, mode=OUT, jdbcType=VARCHAR}
+    )}
+  </select>
+
+
+  <select id="getBoardNewCount" parameterType="BoardParams" resultType="Board">
+
+    EXEC dbo.GetBoardNewCount
+
+  </select>
+
+  <select id="getMainBoardList" parameterType="BoardParams" resultMap="BoardResult">
+
+    EXEC dbo.BOARDLIST_MAIN @TopCnt     = #{topCnt}
+                          , @Userid		  = #{userId}
+                          , @Type		    = #{type}
+  </select>
+
+<!--Update -->
+  <select id="increaseReadCount" parameterType="BoardParams" resultType="String">
+
+    EXEC dbo.IncreaseReadCount @BoardId     = #{boardId}
+
+  </select>
+
+   <select id="boardUpdate" parameterType="BoardParams" resultType="Board">
+
+    EXEC dbo.BoardUpdate @BoardId       = #{boardId},
+                         @Title         = #{title},
+                         @Color         = #{color},
+                         @Content       = #{content},
+                         @TopOrder      = #{topOrder},
+                         @Gubun1        = #{gubun1},
+                         @Gubun2        = #{gubun2},
+                         @HeadTitle     = #{headTitle},
+                         @UseReplyLike  = #{useReplyLike},
+                         @UserId        = #{userId},
+                         @Class         = #{cls}
+
+  </select>
+
+  <select id="setChangeBoardName" parameterType="BoardParams">
+
+    EXEC dbo.SetChangeBoardName @MenuId     = #{menuId},
+                                @MenuName   = #{menuName}
+
+  </select>
+
+  <select id="setChangeMenuGroup" parameterType="BoardParams">
+
+    EXEC dbo.SetChangeMenuGroup @MenuId     = #{menuId},
+                                @MenuName   = #{menuName}
+
+  </select>
+
+  <select id="setLike" parameterType="BoardParams">
+
+    EXEC dbo.LikeThis @Replyid     = #{replyId}
+                    , @UserId		   = #{userId}
+                    , @LikeYN		   = #{likeYn}
+
+  </select>
+
+  
+  <select id="getMenuDepth" parameterType="BoardParams" resultType="Board">
+
+    EXEC dbo.USP_MenuDepth_READ @in_MenuID     = #{menuId}
+
+  </select>
+
+  <select id="unCheckTop" parameterType="BoardParams">
+
+    EXEC dbo.USP_Board_TopUnCheck_MODIFY @BoardId     = #{boardId}
+
+  </select>
+
+  <select id="boardMove" parameterType="BoardParams">
+
+    EXEC dbo.BoardMove @MenuId             = #{menuId},
+                       @BoardId            = #{boardId},
+                       @ReBoardId          = #{reBoardId},
+                       @UserId             = #{userId}
+
+  </select>
+
+  <select id="setChangeOrder" parameterType="BoardParams">
+
+    EXEC dbo.SetChangeBoardOrder @MenuId        = #{menuId}
+                               , @UpperMenuId		= #{upperMenuId}
+                               , @Sort		      = #{sort}
+                               , @Class		      = #{cls}
+
+  </select>
+
+  <select id="getHeadTitleInsertUpdate" parameterType="BoardParams" statementType="CALLABLE">
+
+    {CALL dbo.GetHeadTitleInsertUpdate (
+        @intIdx = #{idx, jdbcType=INTEGER},
+        @strMenuId1 = #{menuId, jdbcType=INTEGER},
+        @strHeadTitle = #{headTitle, jdbcType=VARCHAR},
+        @strMode = #{mode, jdbcType=VARCHAR},
+        @outIdx = #{outIdx, mode=OUT, jdbcType=INTEGER}
+    )}
+
+  </select>
+
+  <select id="reserveUpdate" parameterType="BoardParams">
+
+    EXEC dbo.TB_Reserve_UPDATE @ChangeDate          = #{changeDate}
+                                , @ChangeTime		    = #{changeTime}
+                                , @TeacherId		    = #{teacherId}
+                                , @BoardId		      = #{boardId}
+
+  </select>
+
+
+<!--Insert -->
+
+  <select id="boardIconInsert" parameterType="BoardParams" statementType="CALLABLE">
+
+    {CALL dbo.BoardIconInsert (
+        #{userId, jdbcType=VARCHAR},
+        #{src, jdbcType=VARCHAR},
+        #{idx, mode=OUT, jdbcType=INTEGER}
+    )}
+
+  </select>
+
+   <select id="boardInsert" parameterType="BoardParams">
+
+    EXEC dbo.BoardInsert @MenuId             = #{menuId},
+                         @BoardId            = #{boardId},
+                         @ReBoardId          = #{reBoardId},
+                         @ReNewBoardId       = #{reNewBoardId},
+                         @Writer             = #{writer},
+                         @Title              = #{title},
+                         @Color              = #{color},
+                         @Content            = #{content},
+                         @State              = #{state},
+                         @TopOrder           = #{topOrder},
+                         @Gubun1             = #{gubun1},
+                         @Gubun2             = #{gubun2},
+                         @HeadTitle          = #{headTitle},
+                         @UseReplyLike       = #{useReplyLike},
+                         @RemoteIP           = #{remoteIP}
+
+  </select>
+
+   <select id="boardFileInsert" parameterType="BoardParams">
+
+    EXEC dbo.BoardFileInsert @FileId             = #{fileId},
+                             @BoardId            = #{boardId},
+                             @FileName           = #{fileName},
+                             @NewFileName        = #{newFileName},
+                             @FileBytes          = #{fileBytes},
+                             @FilePath           = #{filePath}
+
+  </select>
+
+  <select id="replyRegister" parameterType="BoardParams">
+
+    EXEC dbo.ReplyRegister @ReplyId            = #{replyId},
+                           @BoardId            = #{boardId},
+                           @Writer             = #{writer},
+                           @Content            = #{content}
+
+  </select>
+
+
+  <select id="boardReply" parameterType="BoardParams">
+
+    EXEC dbo.BoardReply @MenuId             = #{menuId},
+                        @BoardId            = #{boardId},
+                        @ReBoardId          = #{reBoardId},
+                        @Writer             = #{writer},
+                        @Title              = #{title},
+                        @Color              = #{color},
+                        @Content            = #{content},
+                        @State              = #{state},
+                        @HeadTitle          = #{headTitle},
+                        @RemoteIP           = #{remoteIP}
+
+  </select>
+
+  <select id="setBoardAuthUser" parameterType="BoardParams">
+
+    EXEC dbo.SetAuthUserList @UserId    = #{userId},
+                             @MenuId    = #{menuId}
+
+  </select>
+
+  <select id="reserveInsert" parameterType="BoardParams" statementType="CALLABLE">
+
+    {CALL dbo.TB_Reserve_INSERT (
+        #{reserveDate, jdbcType=VARCHAR},
+        #{reserveTime, jdbcType=VARCHAR},
+        #{teacherId, jdbcType=VARCHAR},
+        #{boardId, jdbcType=VARCHAR},
+        #{idx, mode=OUT, jdbcType=INTEGER}
+    )}
+
+  </select>
+
+
+  <!--Delete-->
+
+  <select id="replyDelete" parameterType="BoardParams">
+
+    EXEC dbo.ReplyDelete @ReplyId    = #{replyId}
+
+  </select>
+
+
+  <select id="boardFileDelete" parameterType="BoardParams">
+
+    EXEC dbo.BoardFileDelete @FileId    = #{fileId}
+
+  </select>
+
+  <select id="boardIconDelete" parameterType="BoardParams">
+
+    EXEC dbo.BoardIconDelete @Idx    = #{idx}
+
+  </select>
+
+  <select id="boardDelete" parameterType="BoardParams">
+
+    EXEC dbo.BoardDelete @MenuId             = #{menuId},
+                         @BoardId            = #{boardId},
+                         @UserId             = #{userId},
+                         @Class              = #{cls}
+
+  </select>
+
+
+  <select id="adminBoardDelete" parameterType="BoardParams">
+
+    EXEC dbo.USP_BoardMGT_DEL @MenuId             = #{menuId},
+                              @BoardId            = #{boardId},
+                              @in_UserID          = #{userId}
+
+  </select>
+
+
+  <select id="reserveDelete" parameterType="BoardParams" statementType="CALLABLE">
+
+    {CALL dbo.TB_Reserve_DELETE (
+        #{reserveDate, jdbcType=VARCHAR},
+        #{reserveTime, jdbcType=VARCHAR},
+        #{teacherId, jdbcType=VARCHAR},
+        #{boardId, jdbcType=VARCHAR},
+        #{affectedRow, mode=OUT, jdbcType=INTEGER}
+    )}
+
+  </select>
+
+
+
+</mapper>

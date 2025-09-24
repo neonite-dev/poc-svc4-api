@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block layout:fragment="title">
+    <title>chunjae service dev 4 team</title>
+</th:block>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+      .footer {
+        position: absolute;
+        bottom: 0px;
+        margin-left: 45%;
+      }
+    </style>
+</th:block>
+<th:block layout:fragment="javascript">
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</th:block>
+<head th:replace="~{fragments/common/head :: headFragment}"></head>
+<body>
+  <div th:replace ="~{fragments/common/header :: headerFragment}" ></div>
+  <div layout:fragment="content"></div>
+  <div th:replace ="~{fragments/common/footer :: footerFragment}" ></div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+/* This is for the logo */
+.leftSidebar {
+  border: 0;
+  box-shadow: none !important;
+
+  .logo {
+    padding-inline-start: 7px;
+  }
+}
+
+/* This is for the Vertical sidebar */
+.scrollnavbar {
+  block-size: calc(100vh - 100px);
+
+  .smallCap {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding-block: 0 !important;
+    padding-inline: 4px 0 !important;
+  }
+
+  .v-list {
+    color: rgb(var(--v-theme-lightText));
+  }
+
+  /* General Menu css */
+  .v-list-group__items .v-list-item,
+  .v-list-item {
+    border-radius: $border-radius-root;
+    padding-inline-start: calc(12px + var(--indent-padding) / 2) !important;
+
+    &:hover {
+      color: rgb(var(--v-theme-secondary));
+    }
+
+    .v-list-item__prepend {
+      margin-inline-end: 13px;
+    }
+
+    .v-list-item__append {
+      font-size: 0.875rem;
+
+      .v-icon {
+        margin-inline-start: 13px;
+      }
+    }
+
+    .v-list-item-title {
+      font-size: 0.875rem;
+    }
+  }
+
+  .leftPadding {
+    margin-inline-start: 4px;
+  }
+
+  /* This is for the dropdown */
+  .v-list {
+    .v-list-item--active {
+      .v-list-item-title {
+        font-weight: 500;
+      }
+    }
+
+    .sidebarchip .v-icon {
+      margin-inline-start: -3px;
+    }
+
+    .v-list-group {
+      .v-list-item:hover > .v-list-item__overlay,
+      .v-list-item--active > .v-list-item__overlay {
+        background-color: transparent;
+      }
+
+      .v-list-item:focus-visible > .v-list-item__overlay {
+        opacity: 0;
+      }
+    }
+
+    > .v-list-group {
+      position: relative;
+
+      > .v-list-item--active,
+      > .v-list-item:hover {
+        background: rgb(var(--v-theme-secondary), 0.05);
+      }
+
+      &::after {
+        position: absolute;
+        background: rgb(var(--v-theme-primary), 0.15);
+        block-size: calc(100% - 46px);
+        content: '';
+        inline-size: 1px;
+        inset-block-start: 46px;
+        inset-inline-start: 21px;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.v-navigation-drawer--rail {
+  .scrollnavbar .v-list .v-list-group__items,
+  .hide-menu {
+    opacity: 0;
+  }
+
+  .leftPadding {
+    margin-inline-start: 0;
+  }
+}
+
+@media only screen and (min-width: 1170px) {
+  .mini-sidebar {
+    .logo {
+      overflow: hidden;
+      inline-size: 40px;
+    }
+
+    .leftSidebar:hover {
+      box-shadow: $box-shadow !important;
+    }
+
+    .v-navigation-drawer--expand-on-hover:hover {
+      .logo {
+        inline-size: 100%;
+      }
+
+      .v-list .v-list-group__items,
+      .hide-menu {
+        opacity: 1;
+      }
+    }
+  }
+}

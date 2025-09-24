@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragments/layout/dashboardLayout}">
+
+<section layout:fragment="content">
+	<div class="row">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<ul class="links">
+						<li th:each="code, codeStat : ${codes}">
+							<div>
+								<a th:href="@{codes(depth1Code=${code.depth1Code}, depth2Code=${code.depth2Code})}">
+									<span th:text="|depth1Code : ${code.depth1Code}|"></span>
+									<span th:text="${code.depth1Name}"></span>
+									
+									<span th:text="|=>	depth2Code : ${code.depth2Code}|"></span>
+									<span th:text="${code.depth2Name}"></span>
+								</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

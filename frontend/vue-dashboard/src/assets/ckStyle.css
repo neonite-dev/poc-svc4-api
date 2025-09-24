@@ -1,0 +1,20 @@
+@media print {
+  body {
+    margin: 0 !important;
+  }
+}
+
+.main-container {
+  inline-size: fit-content;
+  margin-inline: auto;
+}
+
+.ck-content {
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.ck.ck-editor__main > .ck-editor__editable {
+  max-block-size: 500px;
+  min-block-size: 300px;
+}

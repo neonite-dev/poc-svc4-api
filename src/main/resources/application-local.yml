@@ -1,0 +1,37 @@
+# server 설정
+server:
+  port: 8080
+
+# profiles 설정
+spring:
+  config:
+    activate:
+      on-profile: local
+
+---
+# datasource 설정
+spring:
+  datasource:
+    extranet:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:sqlserver://10.20.100.213;databaseName=HBEdu_App_Extranet;encrypt=true;trustServerCertificate=true
+      username: ENC(VmKyy97l03FEH5Q6v83sfwaBQcOR2/QjOGu2SxEULRrIl0hI5geEKTXb+heywIRX)
+      password: ENC(mtYc6kXmKd+lC3sk3eeTpMJST3WZUvIuvnY6nwXDtsCq+7fGXOKNGoED2LBH0wYbE+a0GivbCx5RoUnYeiV6wA==)
+    isherpa:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:sqlserver://10.20.100.215;databaseName=ISHERPA_2010;encrypt=true;trustServerCertificate=true
+      username: ENC(VmKyy97l03FEH5Q6v83sfwaBQcOR2/QjOGu2SxEULRrIl0hI5geEKTXb+heywIRX)
+      password: ENC(mtYc6kXmKd+lC3sk3eeTpMJST3WZUvIuvnY6nwXDtsCq+7fGXOKNGoED2LBH0wYbE+a0GivbCx5RoUnYeiV6wA==)
+    eduapp:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:sqlserver://10.20.100.220;databaseName=HBEdu_App;encrypt=true;trustServerCertificate=true
+      username: ENC(VmKyy97l03FEH5Q6v83sfwaBQcOR2/QjOGu2SxEULRrIl0hI5geEKTXb+heywIRX)
+      password: ENC(mtYc6kXmKd+lC3sk3eeTpMJST3WZUvIuvnY6nwXDtsCq+7fGXOKNGoED2LBH0wYbE+a0GivbCx5RoUnYeiV6wA==)
+      # username: milkt_dev_user
+      # password: QvPb_DL!RSo$(3tu@sbNM
+
+---
+# thymeleaf 수정시 실시간 반영되도록 설정
+spring:
+  thymeleaf:
+    prefix: file:src/main/resources/templates/

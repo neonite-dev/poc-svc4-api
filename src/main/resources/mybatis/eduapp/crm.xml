@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cjt.svc4.mapper.eduapp.EduAppCodeMapper">
+
+  <select id="getCrmCodeList" parameterType="CrmCode" resultType="CrmCode">
+
+    SELECT TOP 100
+      bigcode	as depth1Code, smallcode	as depth2Code, subcode	, code 
+      , cname as depth1Name
+      , subname	as depth2Name
+    FROM HBEdu_App.dbo.TBL_CRM_Code
+    WHERE 1=1
+      <if test="depth1Code != null and depth1Code != '' and depth1Code != ' '">
+        AND bigcode = #{depth1Code}
+      </if>
+      <if test="depth2Code != null and depth2Code != '' and depth2Code != ' '">
+        AND smallcode = #{depth2Code}
+      </if>
+      AND isuse = 'Y'
+    ORDER BY codesort ASC
+
+  </select>
+  <select id="getCrmCodeById" parameterType="String" resultType="CrmCode">
+
+    SELECT TOP 1
+      bigcode	as depth1Code, smallcode	as depth2Code, subcode	, code 
+      , cname as depth1Name
+      , subname	as depth2Name
+    FROM HBEdu_App.dbo.TBL_CRM_Code
+    WHERE code = #{id}
+
+  </select>
+
+  <select id="test" resultType="String">
+
+    <![CDATA[
+		select 'select eduapp test!!'
+		]]>
+
+  </select>
+
+  <select id="test3" resultType="CrmCode">
+    SELECT 'A' AS depth1Code, 'AA' AS depth2Code, 'AAA' AS depth1Name, 'AAAA' AS depth2Name
+    UNION ALL
+    SELECT 'B' AS depth1Code, NULL AS depth2Code, 'BBB' AS depth1Name, 'BBBB' AS depth2Name
+    UNION ALL
+    SELECT ISNULL(NULL, '') AS depth1Code, NULL AS depth2Code, NULL AS depth1Name, NULL AS depth2Name
+
+  </select>
+</mapper>

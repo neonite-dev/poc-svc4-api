@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# .git 경로 이동 후 lint-staged
+cd frontend/vue-dashboard && pnpm lint-staged
+
+# 특정 branch commit 제어
+echo -e "===\n>> husky pre-commit 시작 특정 branch commit 제어"
+echo -e "===\n>> master|production|stage|develop에 대해 branch commit 제어"
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+PROTECTED_BRANCHES="^(master|production|stage|develop)"
+
+# Set the git root folder path
+GIT_ROOT=$(git rev-parse --show-toplevel)
+
+# Define the rebase and merge paths
+REBASE_PATH="$GIT_ROOT/.git/rebase-merge"
+MERGE_PATH="$GIT_ROOT/.git/MERGE_HEAD"
+
+# Check if the rebase or merge path exists.
+# If they don't, it's a normal commit and we can run the pre-commit hook
+if [ -f "$REBASE_PATH" ] || [ -f "$MERGE_PATH" ]; then
+  echo "Skipping Husky pre-commit hook: We are in the middle of a rebase or merge."
+else
+  echo "Running Husky pre-commit hook: Formatting affected files"
+  if [[ "$BRANCH" =~ $PROTECTED_BRANCHES ]]
+  then
+    echo -e "\n🚫 Cannot push to remote $BRANCH branch, please create your own branch and use PR."
+    echo -e "🚫 DO NOT PUSH it $BRANCH.\n" && exit 1
+  fi
+fi
+
+echo -e "===\n>> husky pre-commit 정상완료"
+exit 0

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cjt.svc4.mapper.isherpa.CrmCodeMapper">
+
+  <select id="getCrmCodeList" parameterType="CrmCode" resultType="CrmCode">
+
+    EXEC dbo.USP_CRM_CODE_SELECT @in_Depth1_Code = #{depth1Code}, @in_Depth2_Code = #{depth2Code}
+    
+    <!-- SELECT T1.Code AS 'Depth1Code', T1.CodeName AS 'Depth1Name', ISNULL(T2.Code, '') AS 'Depth2Code', ISNULL(T2.CodeName, '') AS 'Depth2Name'
+    FROM DBO.TBL_CRM_Code AS T1 WITH(NOLOCK)
+        LEFT OUTER JOIN DBO.TBL_CRM_Code AS T2 WITH(NOLOCK) ON T1.Code = T2.TCode AND T2.DelYn = 'N' AND T2.CodeIndex = 2
+        <if test="depth2Code != null and depth2Code != '' and depth2Code != ' '">
+          AND T2.Code = #{depth2Code}
+        </if>
+    WHERE T1.CODEINDEX = 1
+        AND T1.DelYn = 'N'
+        AND T1.Code NOT IN ('03', '08', '09', '15')
+        <if test="depth1Code != null and depth1Code != '' and depth1Code != ' '">
+          AND T1.Code = #{depth1Code}
+        </if> -->
+
+  </select>
+  <select id="getCrmCodeById" parameterType="String" resultType="CrmCode">
+
+    SELECT top 1 T1.Code AS 'Depth1Code', T1.CodeName AS 'Depth1Name', ISNULL(T2.Code, '') AS 'Depth2Code', ISNULL(T2.CodeName, '') AS 'Depth2Name'
+    FROM DBO.TBL_CRM_Code AS T1 WITH(NOLOCK)
+        LEFT OUTER JOIN DBO.TBL_CRM_Code AS T2 WITH(NOLOCK) ON T1.Code = T2.TCode AND T2.DelYn = 'N'
+            AND T2.CodeIndex = 2 AND T2.Code = CASE WHEN ISNULL(#{id}, '') = '' THEN T2.Code ELSE #{id} END
+    WHERE T1.CODEINDEX = 1
+        AND T1.DelYn = 'N'
+        AND T1.Code NOT IN ('03', '08', '09', '15')
+
+  </select>
+
+  <select id="test" resultType="String">
+
+    <![CDATA[
+		select 'select 1 test!!'
+		]]>
+
+  </select>
+</mapper>

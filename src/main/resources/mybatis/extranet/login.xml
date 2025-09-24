@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cjt.svc4.mapper.extranet.LoginMapper">
+
+ <resultMap id="LoginResult" type="Login">
+    <result column="Class" property="cls" />
+  </resultMap>
+
+  <select id="loginChk" parameterType="LoginParams" resultType="Login">
+
+    EXEC dbo.LoginChk @UserId       = #{userId},
+                      @in_Password  = #{password},
+                      @in_UserIP    = #{userIP}
+
+  </select>
+
+  <select id="getUserDuplicateWhether" parameterType="LoginParams" statementType="CALLABLE">
+
+    {CALL dbo.GetUserDuplicateWhether (
+        #{userName, jdbcType=VARCHAR},
+        #{clientIP, jdbcType=VARCHAR},
+        #{browser, jdbcType=VARCHAR},
+        #{duplicateYN, mode=OUT, jdbcType=VARCHAR}
+    )}
+
+  </select>
+
+
+  <select id="checkSMSAuth" parameterType="LoginParams" resultType="Login">
+
+    EXEC dbo.USP_UserSMSAuthCheck @in_UserId       = #{userId},
+                                  @in_AuthNum      = #{authNum}
+
+  </select>
+
+
+  <select id="userAuthCheck" parameterType="LoginParams" resultType="Login">
+
+    EXEC dbo.USP_UserAuthCheck @in_ExtranetID  = #{userId}
+
+  </select>
+
+
+  <select id="userInfo" parameterType="LoginParams" resultMap="LoginResult">
+
+    EXEC dbo.Session_UserInfo @UserId  = #{userId}
+
+  </select>
+
+
+  <select id="authNumInsert" parameterType="LoginParams">
+
+    EXEC dbo.USP_UserAuth @In_UserID      = #{userId},
+                          @in_AuthNumber  = #{authNum}
+
+  </select>
+
+  <select id="setUserLoginHis" parameterType="LoginParams" resultType="Login">
+
+    EXEC dbo.SetUserLoginHis @UserName      = #{userName},
+                             @ClientIP      = #{clientIP},
+                             @Browser       = #{browser},
+                             @Type          = #{type}
+
+  </select>
+  
+  <select id="logout" parameterType="LoginParams">
+
+    EXEC dbo.SetUserLogoutOtherIP @UserName      = #{userName}
+
+  </select> 
+
+  <select id="getUserLogoutWhether" parameterType="LoginParams" statementType="CALLABLE">
+
+    {CALL dbo.GetUserLogoutWhether (
+        #{userName, jdbcType=VARCHAR},
+        #{logoutYN, mode=OUT, jdbcType=VARCHAR}
+    )}
+
+  </select>
+
+  <select id="getOtpKey" parameterType="LoginParams">
+
+    EXEC dbo.GetUserInfo @UserId      = #{userId}
+
+  </select> 
+
+  <select id="otpKeyUpdate" parameterType="LoginParams" resultType="Login">
+
+    EXEC dbo.OtpKey_Update @in_userid      = #{userId},
+                           @in_otpKey      = #{otpKey}
+
+  </select> 
+
+  <select id="loginPwChange" parameterType="LoginParams" resultType="Login">
+
+    EXEC dbo.LoginPwChange @in_UserId      = #{userId},
+                           @in_Password    = #{password},
+                           @in_UserIP      = #{userIP}
+
+  </select> 
+
+</mapper>

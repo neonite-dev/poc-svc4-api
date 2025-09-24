@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cjt.svc4.mapper.extranet.CommonMapper">
+
+ <resultMap id="CommonResult" type="Common">
+    <result column="Class" property="cls" />
+  </resultMap>
+
+  <resultMap id="MenuResult" type="Menu">
+    <result column="Class" property="cls" />
+  </resultMap>
+
+ <resultMap id="menuResult1" type="Menu">
+    <result column="menuId" property="menuId" />
+    <result column="menuName" property="menuName" />
+    <result column="upperMenuId" property="upperMenuId" />
+    <result column="type" property="type" />
+    <result column="sort" property="sort" />
+  </resultMap>
+
+ <resultMap id="menuResult2" type="Menu">
+    <result column="menuId" property="menuId" />
+    <result column="menuName" property="menuName" />
+    <result column="upperMenuId" property="upperMenuId" />
+    <result column="type" property="type" />
+    <result column="sort" property="sort" />
+    <result column="headTitle" property="headTitle" />
+    <result column="idx" property="idx" />
+    <result column="regDate" property="regDate" />
+  </resultMap>
+
+<!--Select-->
+
+  <select id="getMenuList" parameterType="CommonParams" resultMap="MenuResult">
+
+    EXEC dbo.Board_MenuList @UserId = #{userId}
+
+  </select>
+
+  <select id="getAuthUserList" parameterType="CommonParams" resultType="Menu">
+
+    EXEC dbo.GetAuthUserList @MenuId     = #{menuId}
+
+  </select>
+
+  <select id="getDeptList" parameterType="CommonParams" resultType="Common">
+
+    EXEC dbo.GetDeptList @Class       = #{cls},
+                          @Level      = #{level},
+                          @TopId      = #{topId}
+
+  </select>
+
+  <select id="setUserInfo" parameterType="CommonParams" resultType="Common">
+
+    EXEC dbo.SetUserInfo @UserId          = #{userId},
+                          @Name           = #{name},
+                          @Password       = #{password},
+                          @Phone          = #{phone},
+                          @IP             = #{ip},
+                          @LoginUserId    = #{loginUserId}
+
+  </select>
+
+  <select id="getNonDeptUserByClass" parameterType="CommonParams" resultType="Common">
+
+    EXEC dbo.GetNonDeptUserByClass @Class     = #{cls}
+
+  </select>
+
+  <select id="getUserList" parameterType="CommonParams" resultMap="CommonResult">
+
+    EXEC dbo.GetUserList @Class     = #{cls}
+
+  </select>
+
+  <select id="getFilter" parameterType="CommonParams" resultType="Menu">
+
+    EXEC dbo.GetFilter @MenuId      = #{menuId},
+                        @Class      = #{cls}
+
+  </select>
+
+  <select id="getFilterList" parameterType="CommonParams" resultType="Menu">
+
+    EXEC dbo.GetFilterList @Class      = #{cls}
+
+  </select>
+
+  <select id="getDeptMember" parameterType="CommonParams" resultType="Common">
+
+    EXEC dbo.GetDeptMember @Class      = #{cls}
+
+  </select>  
+
+  <select id="getDeptAssignMember" parameterType="CommonParams" resultType="Common">
+
+    EXEC dbo.GetDeptAssignMember @Class      = #{cls}
+
+  </select>  
+
+  <select id="getAuthListCount" parameterType="CommonParams" resultType="Common">
+
+    EXEC dbo.GetAuthListCount @Class      = #{cls}
+
+  </select>  
+
+  <select id="getUserMenuAuthList" parameterType="CommonParams" resultType="Menu">
+
+    EXEC dbo.GetUserMenuAuthList @in_UserId     = #{userId},
+                                  @Class         = #{cls}
+
+  </select>
+
+  <select id="favoritesList" parameterType="CommonParams" resultType="Menu">
+
+    EXEC dbo.FavoritesList @UserId = #{userId}
+
+  </select>
+
+  <select id="getUserInfoList" parameterType="CommonParams" statementType="CALLABLE">
+
+    {CALL dbo.GetUserInfoList (
+                              #{searchMode, jdbcType=VARCHAR},
+                              #{searchText, jdbcType=VARCHAR},
+                              #{lock, jdbcType=VARCHAR},
+                              #{pageNo, jdbcType=INTEGER},
+                              #{pageSize, jdbcType=INTEGER},
+                              #{sortExpression, jdbcType=VARCHAR},
+                              #{totalRowsNum, mode=OUT, jdbcType=INTEGER}
+    )}
+
+  </select>
+
+  <select id="getHeadTitleWithMenu" parameterType="CommonParams" resultMap="menuResult1, menuResult2"><!--테이블 2개 반환-->
+
+    EXEC dbo.GetHeadTitleWithMenu @Class =   #{cls}
+
+  </select>
+
+
+  <!--Insert-->
+
+  <select id="favoritesInsert" parameterType="CommonParams">
+
+    EXEC dbo.FavoritesInsert @UserId      = #{userId},
+                              @MenuId     = #{menuId}
+
+  </select>
+
+  <select id="filterInsert" parameterType="CommonParams">
+
+    EXEC dbo.FilterInsert @in_MenuId        = #{menuId},
+                          @in_Type          = #{type},
+                          @Action_UserId    = #{actionUserId},
+                          @Class            = #{cls}
+
+  </select>
+
+  <select id="menuAuthInsert" parameterType="CommonParams">
+
+    EXEC dbo.MenuAuthInsert @in_UserId        = #{userId},
+                            @in_MenuId        = #{menuId},
+                            @in_Type          = #{type},
+                            @Action_UserId    = #{actionUserId},
+                            @Class            = #{cls}
+
+  </select>
+
+  <select id="setCreateDept" parameterType="CommonParams" statementType="CALLABLE">
+
+    {CALL dbo.SetCreateDept (
+                              #{cls, jdbcType=VARCHAR},
+                              #{topId, jdbcType=INTEGER},
+                              #{name, jdbcType=VARCHAR},
+                              #{newId, mode=OUT, jdbcType=INTEGER}
+    )}
+
+  </select>
+
+  <select id="getAuthList" parameterType="CommonParams" statementType="CALLABLE"><!--리스트와 OUTPUT 섞임-->
+
+    {CALL dbo.GetAuthList (
+                              #{cls, jdbcType=VARCHAR},
+                              #{authType, jdbcType=VARCHAR},
+                              #{userId, jdbcType=VARCHAR},
+                              #{pageNo, jdbcType=INTEGER},
+                              #{pageSize, jdbcType=INTEGER},
+                              #{sortExpression, jdbcType=VARCHAR},
+                              #{totalRowsNum, mode=OUT, jdbcType=INTEGER}
+    )}
+
+  </select>
+
+  <select id="setCreateMenuGroup" parameterType="CommonParams" statementType="CALLABLE">
+
+    {CALL dbo.SetCreateMenuGroup (
+                              #{upperMenuId, jdbcType=VARCHAR},
+                              #{menuName, jdbcType=VARCHAR},
+                              #{cls, jdbcType=VARCHAR},
+                              #{newMenuId, mode=OUT, jdbcType=INTEGER}
+    )}
+
+  </select>
+
+  <select id="setCloneBoardWithAuth" parameterType="CommonParams" statementType="CALLABLE">
+
+    {CALL dbo.SetCloneBoardWithAuth (
+                              #{menuId, jdbcType=VARCHAR},
+                              #{menuName, jdbcType=VARCHAR},
+                              #{cloneAuthYn, jdbcType=VARCHAR},
+                              #{cls, jdbcType=VARCHAR},
+                              #{newMenuId, mode=OUT, jdbcType=INTEGER}
+    )}
+
+  </select>
+
+  <!--Update-->
+
+  <select id="setChangeDeptName" parameterType="CommonParams">
+
+    EXEC dbo.SetChangeDeptName @Class      = #{cls},
+                                @Id        = #{id},
+                                @Name      = #{name}
+
+  </select>
+
+  <select id="setAssignUserDept" parameterType="CommonParams">
+
+    EXEC dbo.SetAssignUserDept @Class      = #{cls},
+                                @UserId    = #{userId},
+                                @Id        = #{id}
+
+  </select>
+
+  <select id="setChangeUserDept" parameterType="CommonParams">
+
+    EXEC dbo.SetChangeUserDept @Class         = #{cls},
+                                @UserId       = #{userId},
+                                @Room         = #{room},
+                                @Team         = #{team},
+                                @Part         = #{part}
+
+  </select>
+
+  <select id="setUserChargeClass" parameterType="CommonParams">
+
+    EXEC dbo.SetUserChargeClass @Class     = #{cls},
+                                @UserId    = #{userId},
+                                @Flag      = #{flag}
+
+  </select> 
+
+  <select id="setUnlockUser" parameterType="CommonParams">
+
+    EXEC dbo.SetUnlockUser @UserId    = #{userId}
+
+  </select> 
+
+  <select id="setAuth" parameterType="CommonParams" statementType="CALLABLE">
+
+    {CALL dbo.setAuth (
+                              #{cls, jdbcType=VARCHAR},
+                              #{authType, jdbcType=VARCHAR},
+                              #{userId, jdbcType=VARCHAR},
+                              #{regUserId, jdbcType=VARCHAR},
+                              #{returnCode, mode=OUT, jdbcType=VARCHAR}
+    )}
+
+  </select>
+
+  <select id="setDeleteDept" parameterType="CommonParams" statementType="CALLABLE">
+
+    {CALL dbo.SetDeleteDept (
+                              #{cls, jdbcType=VARCHAR},
+                              #{id, jdbcType=VARCHAR},
+                              #{returnValue, mode=OUT, jdbcType=VARCHAR}
+    )}
+
+  </select>
+
+  <select id="setDeleteUserDept" parameterType="CommonParams" statementType="CALLABLE">
+
+    {CALL dbo.SetDeleteUserDept (
+                              #{cls, jdbcType=VARCHAR},
+                              #{userId, jdbcType=VARCHAR},
+                              #{returnValue, mode=OUT, jdbcType=VARCHAR}
+    )}
+
+  </select>
+
+  <!--Delete-->
+
+  <select id="setAuthDelete" parameterType="CommonParams">
+
+    EXEC dbo.SetAuthDelete @Class     = #{cls},
+                            @Idx      = #{idx}
+
+  </select> 
+
+  <select id="setDeleteAuthFromMenuId" parameterType="CommonParams">
+
+    EXEC dbo.SetDeleteAuthFromMenuId @MenuId     = #{menuId},
+                                      @UserId    = #{userId}
+                                      
+  </select>
+
+  <select id="favoritesDelete" parameterType="CommonParams">
+
+    EXEC dbo.FavoritesDelete @UserId      = #{userId},
+                             @MenuId      = #{menuId}
+                                      
+                                      
+  </select>
+
+  <select id="setDeleteBoard" parameterType="CommonParams" statementType="CALLABLE">
+
+    {CALL dbo.SetDeleteBoard (
+                              #{menuId, jdbcType=VARCHAR},
+                              #{userId, jdbcType=VARCHAR},
+                              #{returnValue, mode=OUT, jdbcType=VARCHAR}
+    )}
+
+  </select>
+
+  <select id="setDeleteMenuGroup" parameterType="CommonParams" statementType="CALLABLE">
+
+    {CALL dbo.SetDeleteMenuGroup (
+                              #{menuId, jdbcType=VARCHAR},
+                              #{userId, jdbcType=VARCHAR},
+                              #{returnValue, mode=OUT, jdbcType=VARCHAR}
+    )}
+
+  </select>
+
+
+</mapper>

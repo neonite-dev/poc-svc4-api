@@ -1,0 +1,21 @@
+export interface Login {
+  authYn: string | undefined
+  browser: string | undefined
+  clientIP: string | undefined
+  cls: string | undefined
+  duplicateYN: string | undefined
+  email: string | undefined
+  loginYn: string | undefined
+  name: string | undefined
+  otpKey: string | undefined
+  part: string | undefined
+  result: string | undefined
+  resultYn: string | undefined
+  room: string | undefined
+  team: string | undefined
+  tel: string | undefined
+  token: string | undefined
+  refreshToken: string | undefined
+  userId: string | undefined
+  userName: string | undefined
+}

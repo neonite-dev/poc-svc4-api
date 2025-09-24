@@ -1,0 +1,30 @@
+version: '3'
+services:
+  vueapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vue-app
+    ports:
+      - 5000:5000
+    networks:
+      - svc4_network_02
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-app
+    volumes:
+      # - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      # - ./nginx.conf:/etc/nginx/nginx.conf
+      # - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/proxy.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 80:80
+    depends_on:
+      - vueapp
+    networks:
+      - svc4_network_02
+
+networks: #네트워크 설정
+  svc4_network_02:
+    driver: bridge
